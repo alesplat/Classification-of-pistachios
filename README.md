@@ -12,7 +12,7 @@ Our dataset includes 2148 images of two different classes, 1232 for *Kirmizi* pi
 
 **Siirt Pistachio**
 
-<img src="file:///C:/Users/xseri/Downloads/Pistachio_Image_Dataset/Pistachio_Image_Dataset/Immagini%20report/Siirt_Pistachio.jpg" title="" alt="Siirt_Pistachio" width="503">
+![](pictures/Siirt.PNG)
 
 As we can see, the images are very similar and even a non-expert may not be able to distinguish the two classes.
 
@@ -28,7 +28,7 @@ For our purposes, rather than working on a CNN from scratch it could be better t
 
 There exist different pre-trained models that can be suitable for our needs. Each model has its own peculiar characteristics in terms of depth (number of layers), number of parameters, size and input size accepted. Some of them have been realized to compete on the _ImageNet Large Scale Visual Recognition Challenge (ILSVRC)_, an annual competition that took place between 2010 and 2017 in which the aim was to both promote the development of better computer vision techniques and to benchmark the state of the art.
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-19-10-42-18-image.png)
+![](pictures/Networks.PNG)
 
 For my task I tried several networks with different hyperparameters configurations. _GoogleNet_, _SqueezeNet_ and _ResNet18_ did not were able to correctly classify the images, giving a value of accuracy of around 60% in all the cases. The best option turned up to be _EfficientNetb0_.
 
@@ -36,7 +36,7 @@ For my task I tried several networks with different hyperparameters configuratio
 
 *EfficientNetb0* is a baseline network built up by Mingxing Tan and Quoc V. Le. by performing a neural architecture search using the AutoML MNAS framework, which optimizes both accuracy and efficiency (FLOPS). The resulting architecture uses mobile inverted bottleneck convolution (MBConv). 
 
-<img title="" src="https://www.researchgate.net/profile/Tashin-Ahmed/publication/344410350/figure/fig4/AS:1022373302128641@1620764198841/Architecture-of-EfficientNet-B0-with-MBConv-as-Basic-building-blocks.png" alt="Architecture of EfficientNet-B0 with MBConv as Basic building blocks." width="527">
+![](pictures/EfficientNetb0.PNG)
 
 | Stage | Operator                  | Resolution | #Output Feature Maps (=channels) | #Layers |
 |:-----:|:-------------------------:|:----------:|:--------------------------------:| ------- |
@@ -54,13 +54,13 @@ A brief workflow of the MBConv1 k3x3 and MBConv6 k3x3 is shown below. MBConv1 us
 
 MbConv6 k3x3 shares the same structure but is preceded by a Convolution with kernel 1x1 and return 6 times the number of input feature maps (extension of feature map); then Batch Normalization and Swish activation function follows. MBConv6 k5x5 is the same with kernel size 5x5.
 
-![](file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-20-11-29-56-image.png)
+![](pictures/EfficientNetb0_2.PNG)
 
 The main idea behind EfficientNet was to create a baseline network that could be efficiently exploited by applying a new concept of scaling dimensions. Typically, model scaling is done to arbitrarily increase the CNN depth (for instance *ResNet* can be scaled up from *ResNet18* to *ResNet200*) or width, or to use larger input image resolution for training and evaluation. While these methods do improve accuracy, they usually lead to suboptimal performance. Deeper ConvNet can capture richer and more complex features but are also more difficult to train due to the vanishing gradient problem. Whereas, wider networks tend to be able to capture more fine-grained features and are easier to train but shallow networks tend to have difficulties in capturing higher level features.
 
 Mingxing Tan and Quoc V. Le proposed a novel model scaling method that uses a compound coefficient to scale up CNNs. Rather than scaling arbitrarily network dimensions (width, depth, resolution), this method uniformly scales each dimension with a fixed set of scaling coefficients.
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-20-10-20-30-image.png) 
+![](pictures/Scaling_methods.PNG) 
 
 The first step in the compound scaling method is to perform a grid search, as to find relationships between different scaling dimensions of the baseline network under a fixed resource constrain. This determines the appropriate scaling coefficient for each of the dimensions mentioned above. We then apply those coefficients to scale up the baseline network to the desired target model size or computational budget. This compound scaling method consistently improves model accuracy and efficiency for scaling up existing models such as *MobileNet* (+1.4% imagenet accuracy), and *ResNet*(+0.7%), compared to conventional scaling methods.
 
@@ -68,7 +68,7 @@ The effectiveness of model scaling also relies heavily on the baseline network a
 
 To solve our classification task, I applied *transfer learning*. I replaced the last FC layer with a new one that gives 2 as output (as the number of classes we have). Then, I applied a sigmoid layer and a final classification layer.
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-18-12-37-46-image.png)
+![](pictures/transfer_learning.PNG)
 
 ## Data pre-processing and hyperparameter optimization
 
@@ -98,21 +98,17 @@ We are going to do this split in a randomized way, namely shuffling the data we 
 [train, validation, test] = splitEachLabel(image_datastore,0.6, 0.20, 0.20, 'randomized')
 ```
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-10-17-30-37-image.png)
-
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-10-17-31-17-image.png)
-
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-10-17-31-39-image.png)
+![](pictures/trainvaltest.PNG)
 
 After having split the dataset, some operations of data augmentation have been performed. I worked with the *Deep Network Designer* app. 
 
 Data augmentation is a process through which we can increase the amount of data by generating new data point composed of slightly modified copies of already existing data. Common transformations are flipping, translation, rotation or the addition of some noise. In my case, I decided to apply a random reflection on X axis and a random rotation in the range -30° and 30°.
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-12-19-00-14-image.png)
+![](pictures/augmentation.PNG)
 
 After these operations, I set the hyperparameters.
 
-<img src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-19-19-23-23-image.png" title="" alt="" width="495">
+![](pictures/hyperparameters.PNG)
 
 I adopted the *Stochastic Gradient Descent with momentum (sgdm)* to update the gradient descent, with a *learning rate* (a parameter that influences how far the gradient needs to move after each iteration) equals to 0.01.
 
@@ -124,7 +120,7 @@ Other interesting hyperparameters are *L2Regularization* (equals to 0.0001) that
 
 After having finished the phase of data pre-processing and hyperparameter optimization, the net has been trained. As shown in the figure below, to perform 10 epoch it lasted almost 2 hours, reaching a sort of equilibrium in terms of accuracy from the third epoch onwards. The validation accuracy obtained was 93.02%, much higher than the results obtained with the other networks citied at the end of the *problem design* paragraph.
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-18-15-27-50-image.png)
+![](pictures/trainingphase.PNG)
 
 ## Testing phase and confusion matrix
 
@@ -137,7 +133,7 @@ true_test_labels = test.Labels
 accuracy_test = mean(true_test_labels == pred_test_labels)
 ```
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-19-15-52-12-image.png)
+![](pictures/accuracy_test.PNG)
 
 The model performed quite good, obtaining a relevant result in terms of accuracy. 
 
@@ -147,7 +143,7 @@ Below, the confusion matrix is plotted.
  plotconfusion(true_test_labels, pred_test_labels)
 ```
 
-<img title="" src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-18-15-36-38-image.png" alt="" width="445">
+![](pictures/confusionmatrix.PNG)
 
 In this figure, the first two diagonal cells show the number and percentage of correct classifications by the trained network. For instance, 243 Kirmizi pistachios have been correctly classified. This corresponds to the 56.6% of all the images of the test set (429). Similarly, 171 Siirt pistachios have been correctly classified, corresponding the 39.9% of all the images. 2.8% of Siirt pistachios have been classified wrongly as Kirmizi (12 images), while 0.7% of Kirmizi pistachios have been labelled as Siirt (just 3 images).
 
@@ -176,11 +172,11 @@ figure
 plotImages(test,imgIdx,sortedScores,pred_test_labels,numImgsToShow)
 ```
 
-<img src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-19-16-46-27-image.png" title="" alt="" width="632">
+![](pictures/most_activating_kirmizi.PNG)
 
 Let's visualize the activation map for one of those images.
 
-<img src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-19-16-53-35-image.png" title="" alt="" width="479">
+![](pictures/heatmap_kirmizi.PNG)
 
 As we can see, there are some patterns in the shell of the pistachio that the algorithm finds in common with other images of the same class.  
 
@@ -199,15 +195,13 @@ figure
 plotImages(test,imgIdx,sortedScores,pred_test_labels,numImgsToShow)
 ```
 
-<img title="" src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-19-16-54-51-image.png" alt="" width="611">
+![](pictures/most_activating_siirt.PNG)
 
 We can notice that even though we are looking at the images that have most strongly activated the network for the Siirt class, there is an image that has been misclassified, meaning that a score even higher has been assigned to the predicted class (despite the score for Siirt it's still very relevant being 0.99994).
 
 Let's visualize the activation map of an image correctly classified and the activation map of the image indicated above as misclassified.
 
-<img title="" src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-19-17-00-23-image.png" alt="" width="447">
-
-<img title="" src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-19-18-09-30-image.png" alt="" width="448">
+![](pictures/siirt_and_misclass_siirt.PNG)
 
 As stated at the beginning of the paragraph, it's not always feasible for us to understand clearly what the network sees. In this case it's very difficult to state why the algorithm misclassified the pistachio according to our eyes. We can just affirm that the network finds some elements in the upper part of the shell that resemble those seen in Kirmizi and makes this mistake. 
 
@@ -217,11 +211,11 @@ The network applied to our dataset showed relevant performance in terms of accur
 
 Below are plotted the misclassified images of Kirmizi pistachios...
 
-<img src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-01-19-19-05-44-image.png" title="" alt="" width="612">
+![](pictures/misclass_kirmizi.PNG)
 
 ... and the misclassified images of Siirt pistachios.
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-01-19-18-51-14-image.png)
+![](pictures/misclass_siirt.PNG)
 
 They are difficult to distinguish, aren't they?
 
@@ -277,13 +271,13 @@ end
 
 I performed the same operations of data augmentation that have been performed previously, namely I let the images randomly reflect on the X axis and made them randomly rotate between -30° and 30°. After having performed the training phase, I showed the accuracies obtained by the 5 iterations and calculated the average.
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-02-01-18-13-59-image.png)
+![](pictures/accuracies.PNG)
 
 ```matlab
 avg = sum(accuracies)/length(accuracies);
 ```
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-02-01-18-17-55-image.png)
+![](pictures/avg.PNG)
 
 As we can see, the results obtained were very relevant. On average I obtained an accuracy of 0.95, leading me to think that  the network behaves well. To test the network with the test set, I chose as final network the one that had the higher accuracy score.
 
@@ -292,7 +286,7 @@ As we can see, the results obtained were very relevant. On average I obtained an
 cv_net = nets(indx_max);
 ```
 
-![](C:\Users\xseri\AppData\Roaming\marktext\images\2023-02-01-18-15-30-image.png)
+![](pictures/max_acc.PNG)
 
 Then, I tested it with the test set.
 
@@ -302,6 +296,6 @@ pred_test_labels = classify(cv_net,augmented_test);
 accuracy_test_cv = mean(true_test_labels == pred_test_labels);
 ```
 
-<img title="" src="file:///C:/Users/xseri/AppData/Roaming/marktext/images/2023-02-01-18-26-24-image.png" alt="" width="234">
+![](pictures/accuracy_test_cv.PNG)
 
 As we can see, the results obtained confirm that the network is very solid and does not have problems of overfitting. We can conclude that the model is able to generalize in a good way, being able to distinguish the two classes of pistachios with consistency and reliability. 
