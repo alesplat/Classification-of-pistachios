@@ -120,7 +120,9 @@ Other interesting hyperparameters are *L2Regularization* (equals to 0.0001) that
 
 After having finished the phase of data pre-processing and hyperparameter optimization, the net has been trained. As shown in the figure below, to perform 10 epoch it lasted almost 2 hours, reaching a sort of equilibrium in terms of accuracy from the third epoch onwards. The validation accuracy obtained was 93.02%, much higher than the results obtained with the other networks citied at the end of the *problem design* paragraph.
 
-![](pictures/trainingphase.PNG)
+![image](pictures/trainingphase.PNG)
+
+![](pictures/trainingresults.PNG)
 
 ## Testing phase and confusion matrix
 
