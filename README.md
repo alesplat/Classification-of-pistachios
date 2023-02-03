@@ -1,6 +1,6 @@
-# Classification of pistachio images with MATLAB
+# Classification of pistachio images
 
-The aim of the following project is to realize a deep learning architecture able to classify correctly two different species of pistachios with different characteristics that address different market types. MATLAB is the software used.
+The aim of the following project is to realize a deep learning architecture able to classify correctly two different species of pistachios with different characteristics that address different market types. Matlab is the software used.
 
 ## Data exploration
 
