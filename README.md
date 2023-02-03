@@ -8,7 +8,7 @@ Our dataset includes 2148 images of two different classes, 1232 for *Kirmizi* pi
 
 **Kirmizi Pistachio**
 
-<img src="file:///C:/Users/xseri/Downloads/Pistachio_Image_Dataset/Pistachio_Image_Dataset/Immagini%20report/Kirmizi_Pistachio.jpg" title="" alt="Kirmizi_Pistachio" width="500">
+![](G:\Il mio Drive\UNIVERSITÀ\MAGISTRALE data science\2° - Neural Computing ✔\Lavori miei\Kirmizi.PNG)
 
 **Siirt Pistachio**
 
